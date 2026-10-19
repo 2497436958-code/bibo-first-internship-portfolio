@@ -1,0 +1,32 @@
+.system-card-group { position: absolute; z-index: 3; top: 4%; right: clamp(22px, 6vw, 96px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: flex-start; column-gap: 22px; row-gap: 20px; }
+.system-card { transform-origin: center; will-change: transform; }
+.system-card:nth-of-type(1) { margin-top: 8px; animation: system-card-float-one 5.6s ease-in-out infinite; }
+.system-card:nth-of-type(2) { margin-top: 46px; animation: system-card-float-two 6.3s ease-in-out infinite .45s; }
+.system-card:nth-of-type(3) { margin-top: 0; animation: system-card-float-three 5.9s ease-in-out infinite .9s; }
+.system-card:nth-of-type(4) { margin-top: 6px; animation: system-card-float-two 6.8s ease-in-out infinite .3s; }
+.system-card:nth-of-type(5) { margin-top: 24px; animation: system-card-float-three 5.4s ease-in-out infinite 1.2s; }
+.system-card:nth-of-type(6) { margin-top: 12px; animation: system-card-float-one 6.5s ease-in-out infinite .7s; }
+.three-d-card-container { display: flex; align-items: center; justify-content: center; perspective: 1000px; }
+.three-d-card-tilt { transform-style: preserve-3d; transition: transform .2s ease-linear; }
+.three-d-card-body { position: relative; display: grid; width: clamp(148px, 13vw, 190px); height: clamp(190px, 16vw, 220px); padding: 18px; border: 1px solid rgb(17 17 17 / .16); border-radius: 22px; background: linear-gradient(145deg, #fff, #e4e7e8); box-shadow: 0 18px 34px rgb(0 0 0 / .18); transform-style: preserve-3d; }
+.three-d-card-body > * { transform-style: preserve-3d; }
+.three-d-card-item { width: fit-content; transition: transform .2s ease-linear; }
+.system-card__backdrop { position: fixed; z-index: 9; inset: 0; border: 0; background: rgb(12 14 18 / .22); backdrop-filter: blur(10px); cursor: default; }
+.system-card__title { align-self: center; justify-self: center; color: #111; font-size: clamp(1.35rem, 2.2vw, 2rem); font-weight: 700; line-height: 1; }
+.system-card__description { position: absolute; top: 18px; left: 18px; right: 18px; margin: 0; color: rgb(17 17 17 / .68); font-size: 11px; line-height: 1.45; }
+.system-card__details { display: none; color: rgb(17 17 17 / .78); font-size: 14px; line-height: 1.7; }
+.system-card__details p { margin: 0; }
+.system-card__details p + p { margin-top: 14px; }
+.system-card__actions { position: absolute; right: 18px; bottom: 18px; left: 18px; display: flex; justify-content: flex-end; color: #111; font-size: 10px; }
+.system-card__actions button { padding: 7px 10px; border: 1px solid #111; border-radius: 999px; color: #fff; background: #111; font: inherit; cursor: pointer; }
+.system-card.is-expanded { position: fixed; z-index: 10; top: 50%; right: auto; left: 50%; margin-top: 0; animation: none; transform: translate(-50%, -50%); }
+.system-card.is-expanded .three-d-card-body { display: block; width: min(500px, calc(100vw - 40px)); height: auto; min-height: 430px; padding: 34px; border-radius: 24px; }
+.system-card.is-expanded .system-card__title { display: block; margin-top: 64px; font-size: 2rem; }
+.system-card.is-expanded .system-card__description { top: 34px; left: 34px; right: 34px; }
+.system-card.is-expanded .system-card__details { display: block; margin-top: 34px; }
+.system-card.is-expanded .system-card__actions { right: 34px; bottom: 34px; left: 34px; }
+@keyframes system-card-float-one { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(-2.5deg); } }
+@keyframes system-card-float-two { 0%, 100% { transform: translateY(0) rotate(3.5deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+@keyframes system-card-float-three { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-16px) rotate(.5deg); } }
+@media (prefers-reduced-motion: reduce) { .system-card { animation: none; } }
+@media (max-width: 900px) { .system-card-group { top: 17%; right: 14px; left: 14px; display: flex; gap: 22px; overflow-x: auto; justify-content: flex-start; padding-bottom: 8px; }.system-card:nth-of-type(1) { margin-top: 16px; }.system-card:nth-of-type(2) { margin-top: 52px; }.system-card:nth-of-type(3) { margin-top: 8px; }.system-card:nth-of-type(4) { margin-top: 38px; }.system-card:nth-of-type(5) { margin-top: 12px; }.system-card:nth-of-type(6) { margin-top: 50px; }.three-d-card-body { width: 190px; height: 270px; padding: 18px; }.system-card__description { top: 18px; left: 18px; right: 18px; }.system-card__actions { right: 18px; bottom: 18px; left: 18px; }.system-card.is-expanded .three-d-card-body { min-height: 500px; padding: 26px; }.system-card.is-expanded .system-card__description { top: 26px; left: 26px; right: 26px; }.system-card.is-expanded .system-card__details { margin-top: 28px; font-size: 13px; }.system-card.is-expanded .system-card__actions { right: 26px; bottom: 26px; left: 26px; } }

@@ -1,0 +1,6 @@
+.boomerang-page {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #000;
+}

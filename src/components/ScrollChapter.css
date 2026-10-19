@@ -1,0 +1,28 @@
+.scroll-chapter {
+  position: relative;
+  min-height: 118svh;
+}
+
+.scroll-chapter__surface {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  min-height: 100svh;
+  will-change: opacity, transform;
+}
+
+.scroll-chapter--reduced-motion {
+  min-height: auto;
+}
+
+.scroll-chapter--reduced-motion .scroll-chapter__surface {
+  position: relative;
+  min-height: 0;
+  will-change: auto;
+}
+
+@media (min-width: 768px) {
+  .scroll-chapter {
+    min-height: 132svh;
+  }
+}

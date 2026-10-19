@@ -1,0 +1,17 @@
+.brand-reveal { position: relative; display: grid; min-height: 100svh; place-items: center; overflow: hidden; isolation: isolate; background: #050505; }
+.brand-reveal::before { position: absolute; z-index: -2; inset: 0; content: ''; background-image: linear-gradient(rgb(255 255 255 / .035) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .035) 1px, transparent 1px); background-size: 56px 56px; }
+.brand-reveal::after { position: absolute; z-index: -1; inset: 0; content: ''; background: rgb(0 0 0 / .28); pointer-events: none; }
+.brand-word-cloud { position: absolute; inset: clamp(20px, 5vw, 88px); overflow: hidden; color: #eff5f7; line-height: .94; text-align: center; opacity: 0; transform: scale(.94); transition: opacity .55s ease, transform .75s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.brand-word-cloud.is-visible { opacity: 1; transform: scale(1); }
+.brand-word { position: absolute; top: var(--y); left: var(--x); display: inline-block; max-width: min(28vw, 300px); font-weight: 500; letter-spacing: 0; transform: translate(-50%, -50%); }
+.brand-word--core { color: #f5f7f8; font-size: clamp(1.25rem, 2.7vw, 3.4rem); font-weight: 800; }
+.brand-word--product { color: #d9e3e6; font-size: clamp(.9rem, 1.55vw, 1.8rem); font-weight: 700; }
+.brand-word--direction { color: #d9775c; font-size: clamp(.74rem, 1.05vw, 1.2rem); }
+.brand-word--brand { color: #e5bd70; font-size: clamp(.75rem, 1.1vw, 1.25rem); }
+.brand-word--technology { color: #86aeb2; font-size: clamp(.7rem, .95vw, 1.1rem); }
+.brand-logo-lockup { position: relative; z-index: 1; width: min(55vw, 680px); }
+.brand-logo-lockup img { display: block; width: 100%; height: auto; mix-blend-mode: screen; }
+
+@media (max-width: 639px) { .brand-reveal::before { background-size: 36px 36px; }.brand-word-cloud { inset: 16px 6px; }.brand-word { max-width: 25vw; }.brand-word--core { font-size: clamp(.86rem, 5vw, 1.45rem); }.brand-word--product { font-size: clamp(.7rem, 3.3vw, .95rem); }.brand-word--direction, .brand-word--brand, .brand-word--technology { font-size: clamp(.58rem, 2.55vw, .76rem); }.brand-logo-lockup { width: min(72vw, 420px); } }
+
+@media (prefers-reduced-motion: reduce) { .brand-word-cloud { transition: none; } }
