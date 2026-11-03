@@ -13,7 +13,7 @@ export type OpenSystemOutcome = { ok: boolean; lines: string[] };
 
 
 function HeroSection() {
-  return <section className="hero"><div className="hero-background"><video aria-label="Hero background video" src="/hero-background.mp4" autoPlay loop muted playsInline /></div><FadeIn y={-20}><nav aria-label="Primary"><a href="#brand">BIBO</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav></FadeIn><FadeIn delay={0.15} y={40} className="hero-title-wrap"><h1 className="hero-heading">Hi, i&apos;m XX</h1></FadeIn><FadeIn delay={0.6} y={30} className="portrait-wrap"><img alt="Hero portrait" src="/jack-portrait.png" /></FadeIn><div className="hero-bottom"><FadeIn delay={0.35} y={20}><p>BIBO Internship Progress Report</p></FadeIn><FadeIn delay={0.5} y={20}><StartButton /></FadeIn></div></section>;
+  return <section className="hero"><div className="hero-background"><video aria-label="Hero background video" src="/hero-background.mp4" autoPlay loop muted playsInline /></div><FadeIn y={-20}><nav aria-label="Primary"><a href="#brand">BIBO</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav></FadeIn><FadeIn delay={0.15} y={40} className="hero-title-wrap"><h1 className="hero-heading">Hi, i&apos;m XX</h1></FadeIn><FadeIn delay={0.6} y={30} className="portrait-wrap"><img alt="Animated hero portrait" src="/jack-portrait.webp" /></FadeIn><div className="hero-bottom"><FadeIn delay={0.35} y={20}><p>BIBO Internship Progress Report</p></FadeIn><FadeIn delay={0.5} y={20}><StartButton /></FadeIn></div></section>;
 }
 
 function ProjectsSection() {
