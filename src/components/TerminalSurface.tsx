@@ -8,7 +8,7 @@ type TranscriptEntry = { command?: string; lines: string[] };
 
 export type TerminalSurfaceProps = {
   systems: AgentSystem[];
-  onOpenSystem: (system: AgentSystem) => void;
+  onOpenSystem: (system: AgentSystem) => Promise<{ ok: boolean; lines: string[] }>;
 };
 
 const welcome: TranscriptEntry = {
@@ -27,7 +27,7 @@ export function TerminalSurface({ systems, onOpenSystem }: TerminalSurfaceProps)
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [transcript]);
 
-  const submit = (event?: FormEvent) => {
+  const submit = async (event?: FormEvent) => {
     event?.preventDefault();
     const command = input.trim();
     if (!command) return;
@@ -43,7 +43,12 @@ export function TerminalSurface({ systems, onOpenSystem }: TerminalSurfaceProps)
       setTranscript((current) => [...current, { command, lines: result.lines }]);
     }
 
-    if (result.openSystem) onOpenSystem(result.openSystem);
+    if (result.openSystem) {
+      const outcome = await onOpenSystem(result.openSystem);
+      if (outcome.lines.length > 0) {
+        setTranscript((current) => [...current, { lines: outcome.lines }]);
+      }
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -101,7 +106,7 @@ export function TerminalSurface({ systems, onOpenSystem }: TerminalSurfaceProps)
       </div>
       <aside className="terminal-shortcuts" aria-label="Agent system shortcuts">
         <span>QUICK OPEN</span>
-        {systems.map((system, index) => <button key={system.id} type="button" aria-label={`Open ${system.title}`} onClick={() => prefillSystemCommand(system.id)}><b>{String(index + 1).padStart(2, '0')}</b><i style={{ backgroundColor: system.colour }} /><em>{system.title}</em><small>{system.command}</small></button>)}
+        {systems.map((system, index) => <button key={system.id} type="button" aria-label={`Open ${system.title}`} title={`启动命令：${system.startHint}`} onClick={() => prefillSystemCommand(system.id)}><b>{String(index + 1).padStart(2, '0')}</b><i style={{ backgroundColor: system.colour }} /><em>{system.title}</em><small>{system.command}</small></button>)}
       </aside>
     </div>
     <p className="terminal-page__caption">A focused interface for launching BIBO Intelligence agent systems.</p>

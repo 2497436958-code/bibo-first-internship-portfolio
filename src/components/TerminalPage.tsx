@@ -3,7 +3,7 @@ import { TerminalSurface } from './TerminalSurface';
 
 type TerminalPageProps = {
   systems: AgentSystem[];
-  onOpenSystem: (system: AgentSystem) => void;
+  onOpenSystem: (system: AgentSystem) => Promise<{ ok: boolean; lines: string[] }>;
 };
 
 export function TerminalPage({ systems, onOpenSystem }: TerminalPageProps) {

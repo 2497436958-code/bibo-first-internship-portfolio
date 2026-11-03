@@ -5,7 +5,11 @@ import { FadeIn } from './components/FadeIn';
 import { ProjectGallery } from './components/ProjectGallery';
 import { ScrollChapter } from './components/ScrollChapter';
 import { agentSystems } from './components/agentSystems';
+import type { AgentSystem } from './components/agentSystems';
+import { probeAgentSystem } from './components/systemProbe';
 import { TerminalPage } from './components/TerminalPage';
+
+export type OpenSystemOutcome = { ok: boolean; lines: string[] };
 
 
 function HeroSection() {
@@ -17,13 +21,27 @@ function ProjectsSection() {
 }
 
 function App() {
-  const openSystemFromTerminal = (system: (typeof agentSystems)[number]) => {
+  const openSystemFromTerminal = async (system: AgentSystem): Promise<OpenSystemOutcome> => {
+    const outcome = await probeAgentSystem(system.url);
+
+    if (outcome === 'unreachable') {
+      return {
+        ok: false,
+        lines: [
+          `${system.title} 未运行 — ${system.url} 无响应`,
+          '请先在终端启动该 Agent 系统：',
+          `  ${system.startHint}`,
+        ],
+      };
+    }
+
     const opened = window.open(system.url, '_blank');
     if (opened) {
       opened.opener = null;
-      return;
+      return { ok: true, lines: [] };
     }
 
+    // Popup blocked — fall back to a synthetic anchor so the user still gets the tab.
     const link = document.createElement('a');
     link.href = system.url;
     link.target = '_blank';
@@ -32,6 +50,10 @@ function App() {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    return {
+      ok: true,
+      lines: [`浏览器拦截了新标签页，请手动打开：${system.url}`],
+    };
   };
 
   return <main className="site-shell"><ScrollChapter id="hero" intensity="dramatic"><HeroSection /></ScrollChapter><ScrollChapter id="brand" intensity="standard"><BrandRevealSection /></ScrollChapter><ScrollChapter id="boomerang" intensity="dramatic"><BoomerangSection /></ScrollChapter><ScrollChapter id="terminal" intensity="standard"><TerminalPage systems={agentSystems} onOpenSystem={openSystemFromTerminal} /></ScrollChapter><ScrollChapter id="projects" intensity="dramatic"><ProjectsSection /></ScrollChapter><footer id="contact"><p>LET&apos;S CREATE THE UNFORGETTABLE</p><ContactButton label="Return" href="#hero" /></footer></main>;
