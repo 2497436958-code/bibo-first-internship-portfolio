@@ -16,10 +16,6 @@ dist/
 # 测试覆盖率
 coverage/
 
-# 大于 GitHub 单文件 100MB 限制的资产 — hero-background.mp4（131MB）
-# 站点本地运行需要此文件，请在 README "Asset Note" 一节按说明补回
-public/hero-background.mp4
-
 # 环境
 .env
 .env.*

@@ -1,5 +1,7 @@
 # BIBO Internship Progress Report — Jack · 3D Creator Portfolio + Boomerang Landing
 
+**🌐 线上地址：<https://2497436958-code.github.io/>**（GitHub Pages）
+
 > 我在 **BIBO（毕博）** 第一段实习期间完成的 Web 端交付物。
 > 一个 React 单页作品集（"Jack · 3D Creator"），以及配套的 `/boomerang` 营销落地页（"Boomerang · Conversational AI"）。
 
@@ -7,8 +9,16 @@
 
 这是我在 BIBO（毕博）实习期间作为前端交付物完成的项目，旨在把公司的两个对外页面统一收敛到一套 React + Vite 工程里：
 
-- **`/`**  — **Jack · 3D Creator** 作品集：编辑式首屏、`#brand`/`#projects`/`#contact` 等章节，磁吸肖像（magnet）、滚动驱动章节（sticky scroll chapters）、3D 项目文件夹画廊。
-- **`/boomerang`**  — **Boomerang · Conversational AI** 营销落地页：白底首屏 + 视频帧采样回放（Canvas ping-pong）、透明导航、三条特性说明、CTA。
+整站是一个单页应用（无客户端路由），按章节依次为：
+
+1. **Hero** — 编辑式首屏，背景视频 + 磁吸肖像（magnet）
+2. **Brand** — BIBO Intelligence 品牌揭幕，6 张 Agent 概念卡
+3. **Boomerang** — Conversational AI 营销区块，白底 + 视频帧采样回放（Canvas ping-pong）
+4. **Terminal** — Agent 系统控制台（见下节）
+5. **Projects** — 5 个 3D 项目文件夹画廊 + 截图查看器
+6. **Contact** — 页脚
+
+锚点：`#brand` / `#boomerang` / `#terminal` / `#projects` / `#contact`
 
 两套页面共享一套设计 token（近黑色 `#0C0C0C` / 冷灰白 `#D7E2EA`、Kanit / Inter / P22 Mackinac 字体）和一套动画原语（Framer Motion）。
 
@@ -43,9 +53,9 @@
 │   ├── jack-hero.mp4             # 主页肖像视频（3.7MB）
 │   └── projects/                 # 项目画廊截图（5 个项目 × 多张截图）
 ├── src/
-│   ├── main.tsx                  # 入口；按 window.location.pathname 决定渲染 App 还是 BoomerangPage
+│   ├── main.tsx                  # 入口；单页应用，无客户端路由
 │   ├── App.tsx                   # 主页（hero + brand + boomerang + terminal + projects + contact）
-│   ├── BoomerangPage.tsx         # /boomerang 路由
+│   ├── BoomerangPage.tsx         # Boomerang 区块（页内 section，非独立路由）
 │   ├── styles.css                # 全局样式 + 章节滚动样式
 │   ├── boomerang.css             # boomerang 页面样式
 │   └── components/
@@ -120,14 +130,14 @@ pnpm test         # 跑 Vitest
 
 ## Asset Note
 
-`public/hero-background.mp4`（**131 MB**，主页 hero 区背景视频）超出 GitHub 单文件 100 MB 限制，已在 `.gitignore` 中排除。本地运行需手动把它放回 `public/hero-background.mp4` 路径。
+视频资产已重编码为浏览器通用格式：
 
-获取方式：
+| 文件 | 原始 | 现在 |
+|---|---|---|
+| `public/hero-background.mp4` | HEVC 3804×2160 60fps **131 MB** | H.264 1920×1080 30fps **11 MB** |
+| `public/jack-hero.mp4` | HEVC 640×480 60fps 3.7 MB | H.264 640×480 **464 KB** |
 
-- 找原作者 / BIBO 团队索取原始视频文件
-- 或参考 `dist/index.html` 里 `<video src="/hero-background.mp4">` 的引用，自备一个相似风格的视频
-
-缺它时主页 hero 区会是一片黑底但不影响其它章节；`/boomerang` 与 `jack-hero.mp4` 均不受影响。
+HEVC 在 Chrome / Firefox / Safari 之外的浏览器上**无法解码**（原视频在这些浏览器里是静默不播的），转成 H.264 后兼容性恢复，同时体积降到 1/12。`public/projects/` 下的 20 张画廊截图保持 PNG 原样（懒加载）。
 
 ## License
 
