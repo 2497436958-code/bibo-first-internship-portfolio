@@ -46,7 +46,7 @@ describe('Jack portfolio landing page', () => {
     expect(screen.getAllByRole('button', { name: /open .* folder/i })).toHaveLength(5);
     expect(screen.getByText('07 screenshots')).toBeInTheDocument();
     expect(screen.getByText('01 screenshot')).toBeInTheDocument();
-    expect(screen.queryByAltText(/animated hero portrait/i)).not.toBeInTheDocument();
+    expect(screen.getByAltText(/animated hero portrait/i)).toHaveAttribute('src', '/jack-portrait.webp');
     expect(screen.getByLabelText(/hero background video/i)).toHaveAttribute('src', '/hero-background.mp4');
   }, 10_000);
 
@@ -79,7 +79,8 @@ describe('Jack portfolio landing page', () => {
     });
   });
 
-  it('opens an agent system in a new browser tab from the terminal', () => {
+  it('opens an agent system in a new browser tab from the terminal', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status: 200 }));
     const openWindow = vi.spyOn(window, 'open').mockImplementation(() => null);
     render(<App />);
 
@@ -87,11 +88,15 @@ describe('Jack portfolio landing page', () => {
     fireEvent.change(command, { target: { value: 'open mes' } });
     fireEvent.keyDown(command, { key: 'Enter' });
 
-    expect(openWindow).toHaveBeenCalledWith('http://127.0.0.1:5173/', '_blank');
+    await waitFor(() => {
+      expect(openWindow).toHaveBeenCalledWith('http://127.0.0.1:5173/', '_blank');
+    });
+    fetchMock.mockRestore();
     openWindow.mockRestore();
   });
 
-  it('falls back to a target blank link when the browser blocks window.open', () => {
+  it('falls back to a target blank link when the browser blocks window.open', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status: 200 }));
     const openWindow = vi.spyOn(window, 'open').mockReturnValue(null);
     const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
     render(<App />);
@@ -100,8 +105,29 @@ describe('Jack portfolio landing page', () => {
     fireEvent.change(command, { target: { value: 'open high-tech' } });
     fireEvent.keyDown(command, { key: 'Enter' });
 
-    expect(anchorClick).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(anchorClick).toHaveBeenCalled();
+    });
+    fetchMock.mockRestore();
     openWindow.mockRestore();
     anchorClick.mockRestore();
+  });
+
+  it('reports an offline agent system in the terminal instead of opening a dead tab', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Failed to fetch'));
+    const openWindow = vi.spyOn(window, 'open').mockReturnValue(null);
+    render(<App />);
+
+    const command = screen.getByRole('textbox', { name: /terminal command/i });
+    fireEvent.change(command, { target: { value: 'open inspection' } });
+    fireEvent.keyDown(command, { key: 'Enter' });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Equipment Inspection 未运行/)).toBeInTheDocument();
+    });
+    expect(screen.getByText(/API_PORT=8001 python3 api_server\.py/)).toBeInTheDocument();
+    expect(openWindow).not.toHaveBeenCalled();
+    fetchMock.mockRestore();
+    openWindow.mockRestore();
   });
 });
