@@ -88,7 +88,7 @@ pnpm test         # 跑 Vitest
 | `open mes` | MES Agent | 5173 | `cd ~/Desktop/AI\ agent/02_MES_Agent/frontend && npm run dev -- --strictPort --port 5173` |
 | `open inspection` | Equipment Inspection | 8001 | `cd ~/Desktop/AI\ agent/01_设备点检Agent && API_PORT=8001 python3 api_server.py` |
 | `open meeting` | Meeting Agent | 8000 | `cd ~/Desktop/AI\ agent/03_meeting-agent/backend && PATH="$PWD/../frontend/node_modules/.bin:$PATH" ALEMBIC_SKIP=1 ./.venv/bin/python -m uvicorn app.main:app --port 8000` |
-| `open high-tech` | High-Tech Enterprise | 3000 | `cd ~/Documents/ChatGPT/重点专精特长企业/frontend && npm run dev -- --port 3000 --host 127.0.0.1 --strictPort` |
+| `open high-tech` | High-Tech Enterprise | 3000 | `cd ~/Documents/ChatGPT/重点专精特长企业/frontend && npm run dev -- --port 3000 --host 127.0.0.1 --strictPort`<br>后端另开：<br>`cd ~/Documents/ChatGPT/重点专精特长企业 && uvicorn backend.app:app --host 127.0.0.1 --port 8004` |
 
 终端会先探测目标服务是否在线：
 
@@ -96,6 +96,16 @@ pnpm test         # 跑 Vitest
 - **未运行** → 终端里直接打印「未运行 + 无响应地址 + 对应启动命令」，**不会**留下一个 `ERR_CONNECTION_REFUSED` 的死标签页
 
 其他可用命令：`help` / `systems` / `projects` / `about` / `whoami` / `clear`（↑↓ 可翻历史）。
+
+### 端口说明
+
+- 5173 MES Agent frontend（vite 硬编码）· 8765 MES Agent API
+- 8001 设备点检（`api_server.py`，web UI + `/api` 同源）
+- 8000 会议记录 Agent backend（monolith 模式，自带 Next.js 在 3001）
+- 3000 重点专精特新 frontend · 8004 重点专精特新 backend
+
+> 前端 `VITE_API_BASE_URL` 指向 8004（`frontend/.env`）；8000 已被会议记录 Agent 占用。
+> 后端 CORS 白名单同时允许 `:5173` 与 `:3000`。
 
 > 注意：这 4 个系统是**本地开发服务**，只在作者机器上存在。别人克隆这个仓库后终端会提示未运行 —— 这是预期行为。
 

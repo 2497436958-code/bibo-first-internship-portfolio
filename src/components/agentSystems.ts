@@ -39,6 +39,7 @@ export const agentSystems: AgentSystem[] = [
     command: 'open high-tech',
     url: 'http://127.0.0.1:3000/',
     colour: '#8c69ad',
-    startHint: 'cd ~/Documents/ChatGPT/重点专精特长企业/frontend && npm run dev -- --port 3000 --host 127.0.0.1 --strictPort',
+    startHint: 'cd ~/Documents/ChatGPT/重点专精特长企业/frontend && npm run dev -- --port 3000 --host 127.0.0.1 --strictPort'
+        + '  # 前端；后端另开: cd ~/Documents/ChatGPT/重点专精特长企业 && uvicorn backend.app:app --host 127.0.0.1 --port 8004',
   },
 ];
