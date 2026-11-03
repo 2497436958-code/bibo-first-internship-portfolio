@@ -79,7 +79,8 @@ describe('Jack portfolio landing page', () => {
     });
   });
 
-  it('opens an agent system in a new browser tab from the terminal', () => {
+  it('opens an agent system in a new browser tab from the terminal', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status: 200 }));
     const openWindow = vi.spyOn(window, 'open').mockImplementation(() => null);
     render(<App />);
 
@@ -87,11 +88,15 @@ describe('Jack portfolio landing page', () => {
     fireEvent.change(command, { target: { value: 'open mes' } });
     fireEvent.keyDown(command, { key: 'Enter' });
 
-    expect(openWindow).toHaveBeenCalledWith('http://127.0.0.1:5173/', '_blank');
+    await waitFor(() => {
+      expect(openWindow).toHaveBeenCalledWith('http://127.0.0.1:5173/', '_blank');
+    });
+    fetchMock.mockRestore();
     openWindow.mockRestore();
   });
 
-  it('falls back to a target blank link when the browser blocks window.open', () => {
+  it('falls back to a target blank link when the browser blocks window.open', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status: 200 }));
     const openWindow = vi.spyOn(window, 'open').mockReturnValue(null);
     const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
     render(<App />);
@@ -100,7 +105,10 @@ describe('Jack portfolio landing page', () => {
     fireEvent.change(command, { target: { value: 'open high-tech' } });
     fireEvent.keyDown(command, { key: 'Enter' });
 
-    expect(anchorClick).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(anchorClick).toHaveBeenCalled();
+    });
+    fetchMock.mockRestore();
     openWindow.mockRestore();
     anchorClick.mockRestore();
   });
