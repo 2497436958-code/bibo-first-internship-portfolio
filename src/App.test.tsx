@@ -46,7 +46,7 @@ describe('Jack portfolio landing page', () => {
     expect(screen.getAllByRole('button', { name: /open .* folder/i })).toHaveLength(5);
     expect(screen.getByText('07 screenshots')).toBeInTheDocument();
     expect(screen.getByText('01 screenshot')).toBeInTheDocument();
-    expect(screen.getByLabelText(/hero showcase video/i)).toHaveAttribute('src', '/jack-hero.mp4');
+    expect(screen.getByAltText(/hero portrait/i)).toHaveAttribute('src', '/jack-portrait.png');
     expect(screen.getByLabelText(/hero background video/i)).toHaveAttribute('src', '/hero-background.mp4');
   }, 10_000);
 
