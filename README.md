@@ -79,6 +79,26 @@ pnpm preview      # 启动 vite preview（默认 4175），可访问 /  与 /boo
 pnpm test         # 跑 Vitest
 ```
 
+## Agent System Console（终端交互页）
+
+页面里的 **AGENT SYSTEM CONSOLE** 是本地 Agent 系统的启动器，会在你机器上打开 4 个本地开发服务：
+
+| 命令 | 系统 | 端口 | 启动命令 |
+|---|---|---|---|
+| `open mes` | MES Agent | 5173 | `cd ~/Desktop/AI\ agent/02_MES_Agent/frontend && npm run dev -- --strictPort --port 5173` |
+| `open inspection` | Equipment Inspection | 8001 | `cd ~/Desktop/AI\ agent/01_设备点检Agent && API_PORT=8001 python3 api_server.py` |
+| `open meeting` | Meeting Agent | 8000 | `cd ~/Desktop/AI\ agent/03_meeting-agent/backend && PATH="$PWD/../frontend/node_modules/.bin:$PATH" ALEMBIC_SKIP=1 ./.venv/bin/python -m uvicorn app.main:app --port 8000` |
+| `open high-tech` | High-Tech Enterprise | 3000 | `cd ~/Documents/ChatGPT/重点专精特长企业/frontend && npm run dev -- --port 3000 --host 127.0.0.1 --strictPort` |
+
+终端会先探测目标服务是否在线：
+
+- **在线** → 新标签页打开该系统
+- **未运行** → 终端里直接打印「未运行 + 无响应地址 + 对应启动命令」，**不会**留下一个 `ERR_CONNECTION_REFUSED` 的死标签页
+
+其他可用命令：`help` / `systems` / `projects` / `about` / `whoami` / `clear`（↑↓ 可翻历史）。
+
+> 注意：这 4 个系统是**本地开发服务**，只在作者机器上存在。别人克隆这个仓库后终端会提示未运行 —— 这是预期行为。
+
 ## 设计文档
 
 开发期我额外维护了几份 spec / plan（`docs/superpowers/specs/`、`docs/superpowers/plans/`），为了仓库体积没传上来。主要设计决策：
